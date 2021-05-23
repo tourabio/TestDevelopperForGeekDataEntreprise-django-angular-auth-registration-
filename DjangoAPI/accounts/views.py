@@ -6,10 +6,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-
 from rest_framework.decorators import api_view
 from rest_framework import status
+from rest_framework.parsers import JSONParser
+from django.http.response import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
 from accounts.serializers import RegistrationSerializer
+from accounts.models import Account
 
 
 class ProfileView(APIView):
@@ -37,7 +41,8 @@ class CustomAuthToken(ObtainAuthToken):
         return Response({
             'token': token.key,
             'user_id': user.pk,
-            'email': user.email
+            'email': user.email,
+            'is_admin': user.is_admin
         })
         
 
@@ -54,4 +59,29 @@ def registration_view(request):
         else :
             data = serializer.errors
         return Response(data)
-            
+    
+    
+
+        
+        
+@csrf_exempt
+def UserManagementApi(request, id=0):
+    if request.method =='GET':
+        users = Account.objects.all()
+        users_serializer = RegistrationSerializer(users, many=True)
+        return JsonResponse(users_serializer.data, safe=False)
+
+    elif request.method =='PUT':
+        user_data = JSONParser().parse(request)
+        user = Account.objects.get(id = user_data['id'])
+        user_serializer = RegistrationSerializer(user, data=user_data)
+        if user_serializer.is_valid():
+            user_serializer.save()
+            return JsonResponse("Updated successfully!!", safe=False)
+        return JsonResponse("Failed to update.", safe=False)
+
+    elif request.method =='DELETE':
+        user = Account.objects.get(id=id)
+        user.delete()
+        return JsonResponse("deleted successfully!!", safe=False)
+
