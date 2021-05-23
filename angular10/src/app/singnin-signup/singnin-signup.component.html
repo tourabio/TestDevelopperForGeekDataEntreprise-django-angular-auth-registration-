@@ -1,0 +1,91 @@
+<div class="wrapper">
+    <div class="title-text">
+        <div class="title login" [ngStyle]="{'margin-left': login ? '0%' : '-50%' }">
+            Login Form</div>
+        <div class="title signup">
+            Signup Form</div>
+    </div>
+    <div class="form-container">
+        <div class="slide-controls">
+            <input type="radio" name="slide" id="login" checked>
+            <input type="radio" name="slide" id="signup">
+            <label for="login" class="slide login" (click)="switchToSignIn()">Login</label>
+            <label for="signup" class="slide signup" (click)="switchToSignUp()">Signup</label>
+            <div class="slider-tab">
+            </div>
+        </div>
+        <div class="form-inner">
+            <form class="login" [formGroup]="myForm" (ngSubmit)="onSubmit()"
+                [ngStyle]="{'margin-left': login ? '0%' : '-50%' }">
+                <div class="field">
+                    <input type="text" placeholder="Email Address" formControlName="email">
+                </div>
+                <div class="alert alert-danger" *ngIf=" myForm.controls['email'].errors && myForm.get('email').touched">
+                    <div *ngIf="myForm.controls['email'].hasError('required')">*Email is required</div>
+                    <div *ngIf="myForm.controls['email'].hasError('pattern')">*Email Invalid</div>
+                </div>
+                <div class="field">
+                    <input type="password" placeholder="Password" formControlName="password">
+                </div>
+                <div class="alert alert-danger"
+                    *ngIf=" myForm.controls['password'].errors && myForm.get('password').touched">
+                    <div *ngIf="myForm.controls['password'].hasError('required')">*Password is required</div>
+                </div>
+                <div class="pass-link">
+                    <a href="#">Forgot password?</a>
+                </div>
+                <div class="field btn">
+                    <div class="btn-layer">
+                    </div>
+                    <input type="submit" value="Login">
+                </div>
+                <div *ngIf="logged">
+                    <button (click)="logout()" class="btn btn-link">Logout</button>
+                </div>
+
+                <div *ngIf="is_admin && logged">
+                    <a class="btn btn-link" routerLink="userManagement">User management</a>
+                </div>
+
+                <div class="signup-link" *ngIf="!logged">
+                    Not a member? <a href="" (click)="switchToSignUp()">Signup now</a></div>
+
+
+            </form>
+            <form class="signup" [formGroup]="myFormRegister" (ngSubmit)="onSubmitRegister()">
+                <div class="field">
+                    <input type="text" placeholder="Email Address" formControlName="email">
+                </div>
+                <div class="alert alert-danger"
+                    *ngIf=" myFormRegister.controls['email'].errors && myFormRegister.get('email').touched">
+                    <div *ngIf="myFormRegister.controls['email'].hasError('required')">*Email is required</div>
+                    <div *ngIf="myFormRegister.controls['email'].hasError('pattern')">*Email Invalid</div>
+                </div>
+                <div class="field">
+                    <input type="password" placeholder="Password" formControlName="password">
+                </div>
+                <div class="alert alert-danger"
+                    *ngIf=" myFormRegister.controls['password'].errors && myFormRegister.get('password').touched">
+                    <div *ngIf="myFormRegister.controls['password'].hasError('required')">*Password is required</div>
+                </div>
+                <div class="field">
+                    <input type="password" placeholder="Confirm password" formControlName="password2">
+                </div>
+                <div class="alert alert-danger"
+                    *ngIf=" myFormRegister.controls['password2'].errors && myFormRegister.get('password2').touched">
+                    <div *ngIf="myFormRegister.controls['password2'].hasError('required')">*Confirm Password is required</div>
+                </div>
+                <div class="alert alert-danger" *ngIf="passwordMissMatch">
+                    <div>*Password must match</div>
+                </div>
+
+
+                <div class="field btn">
+                    <div class="btn-layer">
+                    </div>
+                    <input type="submit" value="Signup">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

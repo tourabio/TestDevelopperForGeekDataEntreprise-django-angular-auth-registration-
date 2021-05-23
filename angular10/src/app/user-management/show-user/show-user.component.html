@@ -1,0 +1,49 @@
+<h3 class="d-flex justify-content-center my-5">User Management</h3>
+
+
+<button type="button" class="btn btn-dark mb-5" (click)="logout()">Logout</button>
+<table class="table table-striped">
+    <thead>
+        <tr>
+
+            <th>UserId</th>
+            <th>Email</th>
+            <th>Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let dataItem of userList">
+            <td>{{dataItem.id}}</td>
+            <td>{{dataItem.email}}</td>
+            <td><button type="button" class="btn btn-warning mr-1" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    (click)="editClick(dataItem)" data-backdrop="static" data-keyboard="false">Edit</button>
+                <button type="button" class="btn btn-danger" (click)="deleteClick(dataItem)">Delete</button>
+            </td>
+        </tr>
+
+    </tbody>
+
+</table>
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary float-right m-2" data-bs-toggle="modal" data-bs-target="#exampleModal"
+    (click)="addClick()" data-backdrop="static" data-keyboard="false">
+    Add User
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{ModalTitle}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="closeClick()"></button>
+            </div>
+            <div class="modal-body">
+                <app-add-edit-user [user]="user" *ngIf="ActivateAddEditUserComp"></app-add-edit-user>
+            </div>
+        </div>
+    </div>
+</div>
